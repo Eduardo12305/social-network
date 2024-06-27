@@ -8,8 +8,10 @@ Route::controller(UserController::class)->group(function (){
 
     Route::post("/login","login")->name('processoLogin');
 
-    Route::post('/logout', 'logout')->name('logout');
+    Route::get('/logout', 'logout')->name('logout');
 
-    Route::delete('/deleteUser', 'deleteUser')->name('deleteUser')->middleware('auth:web');
+
+    Route::get('/dadosusuario/{user}','userdados')->name('userdados');
+    
 
 });
