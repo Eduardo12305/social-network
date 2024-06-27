@@ -1,13 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+##  Depois fazer com que o endereço fique igual da views
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect('index');
-    }
-    return view('welcome');
-    
+    return redirect()->route('index');
+}
+return view('welcome');
 })->name('cadastrar');
 
 Route::middleware(['auth'])->group(function () {

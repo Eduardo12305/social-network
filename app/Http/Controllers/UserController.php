@@ -43,7 +43,7 @@ class UserController extends Controller
     
     public function create(Request $req)
     {
-        $user = $req->all();
+     $user = $req->all();
      $name = $user["nome"];
      $senha = $user["senha"];
      $email = $user["email"];
@@ -98,9 +98,5 @@ class UserController extends Controller
         }
     }
 
-    
-    public function userdados(User $user){
-        
-    }
 
 }
