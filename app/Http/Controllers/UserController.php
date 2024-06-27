@@ -68,9 +68,10 @@ class UserController extends Controller
     }
 
     
-    public function show(string $id)
+    public function show(User $user)
     {
         
+        return view('dadosuser', compact('user'));
     }
 
     
@@ -99,8 +100,7 @@ class UserController extends Controller
 
     
     public function userdados(User $user){
-        dd($user);
-        return view('dadosuser', compact('user'));
+        
     }
 
 }

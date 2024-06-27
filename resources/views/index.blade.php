@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <style>
+        /* CSS para posicionar o dropdown à direita */
+        .dropdown-menu-right {
+            position: absolute;
+            right: 0;
+            left: auto !important;
+        }
+    </style>
+    <title>Home</title>
 </head>
 <body>
+<div class="container mt-5">
+        <h1 class="mb-4">Pagina inicial</h1>
 
-<form action="{{route('logout')}}" method="get">
-        <button  type="submit" style="color: white;">logout</button>
-</form>
-<a href="{{route('userdados',[auth()->user()->id])}}">
-Ver dados
-</a>
-
-
-    <form method="POST" action="{{route('user.destroy', [auth()->user()->id])}}">
-     @method('DELETE')
-     @csrf
-     <button type="submit">deletar</button>
-    </form>
+        <!-- Incluir o dropdown -->
+        @include('dropdown')
+</div>
 </body>
 </html>
