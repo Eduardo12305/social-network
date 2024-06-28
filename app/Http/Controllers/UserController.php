@@ -43,16 +43,40 @@ class UserController extends Controller
     
     public function create(Request $req)
     {
-     $user = $req->all();
-     $name = $user["nome"];
-     $senha = $user["senha"];
-     $email = $user["email"];
+    //  $user = $req->all();
+      $req->validate([
+        'nome'=>'required|string',
+        'email'=> 'required|email',
+        'senha'=> 'required|string|min:6',
+        'senhaC'=>'required|string|min:6',
+     ]);
+     $validet=$req;
+     $name = $validet["nome"];
+     $email = $validet["email"];
+     $senha = $validet["senha"];   
+     $senhac= $validet["senhaC"];
+     $cel= $validet["cel"];
+
+    if($senha !== $senhac){
+        return redirect()->back()->withErrors(['$senhaC'=>'As senhas não coincidem']);
+    }
+
+    if($cel==null){
+        $cel='00000000';
+    } 
+
+    if (strlen($cel) !== 8) {
+       
+        $cel = '00000000';
+    }
     
      $res = User::create([
         'name'=> $name,
         'email' => $email,
         'password' => Hash::make($senha),
+        'celular'=> $cel,
     ]);
+    
     
     if ($res) {
         return redirect()->route('login');
@@ -82,9 +106,31 @@ class UserController extends Controller
 
     
     public function update(Request $request, string $id)
-    {
-        
-    }
+{
+    // Validar os dados recebidos do formulário
+    $request->validate([
+        'name' => 'required|string',
+        'email' => 'required|email',
+        'password' => 'required|string', // assumindo que 'senha' e 'senhaC' são campos válidos
+        'passwordNew' => 'required|string|min:6', // campo de confirmação de senha
+    ]);
+
+    // Buscar o usuário pelo ID fornecido
+    $user = User::findOrFail($id);
+
+    // Atualizar os dados do usuário com base nos dados recebidos
+    $user->name = $request->input('name');
+    $user->email = $request->input('email');
+    $user->password = bcrypt($request->input('passwordNew')); // caso esteja utilizando criptografia para senha
+    $user->celular = $request->input('cel');
+
+    // Salvar as alterações no banco de dados
+    $user->save();
+
+    // Redirecionar de volta com mensagem de sucesso (opcional)
+    return redirect()->route('cadastrar')->with('success', 'Dados atualizados com sucesso!');
+}
+
 
     public function destroy(User $user)
     {

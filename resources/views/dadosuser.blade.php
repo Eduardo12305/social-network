@@ -8,9 +8,21 @@
 </head>
 <body>
 <div class="container">
-    <p><strong>Nome:</strong> {{ auth()->user()->name }}</p>
-    <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
-    <p><strong>Senha:</strong> {{ auth()->user()->password }}</p>
+
+<form method="POST" action="{{ route('user.update', [auth()->user()->id]) }}">
+    @csrf
+    @method('PUT')
+
+    <p><strong>Nome:</strong> <input type="text" name="name" value="{{ auth()->user()->name }}"></p>
+    <p><strong>Email:</strong> <input type="email" name="email" value="{{ auth()->user()->email }}"></p>
+    <p><strong>Celular</strong><input type="text" name="cel" value="{{auth()->user()->celular}}"> </p>
+    <p><strong>Senha atual:</strong> <input type="password" name="password"></p>
+    <p><strong>Nova Senha:</strong> <input type="password" name="passwordNew"></p>
+    
+
+    <button type="submit">Atualizar Informações</button>
+</form>
+
 </div>
 </body>
 </html>
