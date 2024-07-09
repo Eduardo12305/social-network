@@ -14,11 +14,12 @@ class UserController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
+        
         if(Auth::attempt($credentials)) {
             $req->session()->regenerate();
             return redirect()->route('index');
         }else{
-            return redirect()->route('login')->with('error','Não foi possivel fazer login');
+            return redirect()->route('login')->with('error','Email ou senha incorretos');
         }
     }
     
@@ -49,17 +50,22 @@ class UserController extends Controller
         'email'=> 'required|email',
         'senha'=> 'required|string|min:6',
         'senhaC'=>'required|string|min:6',
+        'username'=> 'required|unique:users,username',
      ]);
      $validet=$req;
      $name = $validet["nome"];
      $email = $validet["email"];
+    //  dd($name);
      $senha = $validet["senha"];   
      $senhac= $validet["senhaC"];
      $cel= $validet["cel"];
+     $username= $validet["username"];
 
+    //  Erro de senhas diferentes
     if($senha !== $senhac){
-        return redirect()->back()->withErrors(['$senhaC'=>'As senhas não coincidem']);
+        return redirect()->back()->withErrors(['senhaC'=>'As senhas não coincidem']);
     }
+    // Fim
 
     if($cel==null){
         $cel='00000000';
@@ -69,19 +75,29 @@ class UserController extends Controller
        
         $cel = '00000000';
     }
+    // Erro de username ja existe
+    $existingUser = User::where('username', $username)->first();
+
+    if ($existingUser) {
+    return redirect()->back()->withErrors(['username' => 'Nome de usuário já registrado']);
+    }
+    // Fim
+
+    
     
      $res = User::create([
         'name'=> $name,
         'email' => $email,
         'password' => Hash::make($senha),
         'celular'=> $cel,
+        'username' => $username,
     ]);
     
     
     if ($res) {
         return redirect()->route('login');
     }else{
-        return redirect()->route('welcome')->with('error', 'aaa');
+        return redirect()->route('welcome')->with('error', 'Não foi possivel cadrastar');
     }
 }
 

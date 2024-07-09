@@ -18,6 +18,14 @@
     </style>
 </head>
 <body>
+
+ <!-- Sessão de erros -->
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+ <!-- sessão de erros -->
     <form method="POST" action="{{ route('processoLogin') }}" class="mt-4 p-4 border rounded bg-light">
         @csrf
         <div class="form-group">

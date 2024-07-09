@@ -18,11 +18,34 @@
     </style>
 </head>
 <body>
+
+    <!-- sessão de erros -->
+
+    <!-- Erro de senhas diferentes-->
+@if($errors->has('senhaC'))
+    <div class="alert alert-danger">
+        {{ $errors->first('senhaC') }}
+    </div>
+@endif
+
+@if($errors->has('username'))
+    <div class="alert alert-danger">
+        {{ $errors->first('username')}}
+    </div>
+@endif
+
+    <!-- sessão de erros -->
+
+
     <form method="POST" action="{{ route('cre-post') }}" class="mt-4 p-4 border rounded bg-light">
         @csrf
         <div class="form-group">
             <label for="nome">Nome</label>
             <input name="nome" type="text" class="form-control" id="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="username">Nome de usuario</label>
+            <input name="username" type="text" class="form-control" id="username" required>
         </div>
         <div class="form-group">
             <label for="email">E-mail</label>
@@ -32,10 +55,12 @@
             <label for="senha">Senha</label>
             <input name="senha" type="password" class="form-control" id="senha" required>
         </div>
+
         <div class="form-group">
             <label for="senhaC">Confirmar senha</label>
             <input name="senhaC" type="password" class="form-control" id="senhaC" required>
         </div>
+
         <div class="form-group">
             <label for="cel">Celular</label>
             <input name="cel" type="text" class="form-control" id="cel">
