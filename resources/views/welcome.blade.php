@@ -22,20 +22,24 @@
     <!-- sessão de erros -->
 
     <!-- Erro de senhas diferentes-->
-@if($errors->has('senhaC'))
+    @if(session('senhaC'))
     <div class="alert alert-danger">
-        {{ $errors->first('senhaC') }}
+        {{ session('senhaC') }}
+    </div>
+@endif
+    <!-- Erro nome de usuario ja existe-->
+@if(session('username'))
+    <div class="alert alert-danger">
+        {{ session('username') }}
     </div>
 @endif
 
-@if($errors->has('username'))
+<!-- @if(session('celerro'))
     <div class="alert alert-danger">
-        {{ $errors->first('username')}}
+        {{ session('celerro') }}
     </div>
-@endif
-
+@endif -->
     <!-- sessão de erros -->
-
 
     <form method="POST" action="{{ route('cre-post') }}" class="mt-4 p-4 border rounded bg-light">
         @csrf
@@ -63,11 +67,12 @@
 
         <div class="form-group">
             <label for="cel">Celular</label>
-            <input name="cel" type="text" class="form-control" id="cel">
+            <input name="cel" type="text" class="form-control" id="cel" >
+                @error('celerro')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
         </div>
-        <div>
-        <a href="{{route('login')}}">Login</a>
-        </div>
+
 
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>

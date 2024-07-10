@@ -29,12 +29,10 @@
     <form method="POST" action="{{ route('processoLogin') }}" class="mt-4 p-4 border rounded bg-light">
         @csrf
         <div class="form-group">
-            <label for="email">E-mail</label>
-            <input name="email" type="email" class="form-control" id="email" required>
+            <input name="emailOrusernameOrphone" type="text" class="form-control"  required placeholder="Email, celular ou Nome de Usuario">
         </div>
         <div class="form-group"> 
-            <label for="senha">Senha</label>
-            <input name="password" type="password" class="form-control" id="senha" required>
+            <input name="password" type="password" class="form-control" id="senha" required placeholder="Senha">
         </div>
         <div>
         <a href="{{route('cadastrar')}}">Cadastro</a>

@@ -2,30 +2,36 @@
 
 namespace App\Http\Controllers;
 use App\Models\Admin;
-use Illuminate\Http\Request;
+use App\Http\Requests\AdminRequest;
+use Illuminate\Support\Facades\Hash;
+
 
 class AdminController extends Controller
 {
-    // public function create(Request $req) {
-    //     $req->validate([
-    //         'nome'=>'required|string',
-    //         'email'=> 'required|email',
-    //         'senha'=> 'required|string|min:6',
-    //         'senhaC'=>'required|string|min:6',
-    //      ]);
-    //      $res = Admin::create([
-    //         'name'=> $nome,
-    //         'email' => $email,
-    //         'password' => Hash::make($senha),
-    //         'celular'=> $cel,
-    //     ]);
+    public function create(AdminRequest $req)
+    {
+        $senha = $req->senha;
+        $senhac = $req->senhaC;
+        $name = $req->name;
+        $username = $req->username;  
         
         
-    //     if ($res) {
-    //         return redirect()->route('login');
-    //     }else{
-    //         return redirect()->route('welcome')->with('error', 'aaa');
-    //     }
-         
-    // }
+    //  Erro de senhas diferentes
+    if($senha !== $senhac){
+        return redirect()->route('admin-cadastro')->with(['senhaC'=>'As senhas não coincidem']);
+    }
+    $res = Admin::create([
+        'name'=> $name,
+        'username' => $username,
+        'password' => Hash::make($senha),
+    ]);
+    
+    // dd($req);
+    
+    if ($res) {
+        return redirect()->route('admin_login');
+    }else{
+        return redirect()->route('admin_cadastro')->with('error', 'Não foi possivel cadrastar');
+    }
+}
 }

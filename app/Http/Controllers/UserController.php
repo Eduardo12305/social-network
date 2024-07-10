@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,19 +10,30 @@ class UserController extends Controller
 {
     
     
-    public function login(Request $req){
-        $credentials = $req->validate([
-            'email' => ['required', 'email'],
+    public function login(Request $req) {
+        $req->validate([
+            'emailOrusernameOrphone' => ['required'],
             'password' => ['required'],
         ]);
-        
-        if(Auth::attempt($credentials)) {
+    
+        $loginField = $req->input('emailOrusernameOrphone');
+        $password = $req->input('password');
+    
+        // Verifica se o campo de login é um email válido
+        $credentials = filter_var($loginField, FILTER_VALIDATE_EMAIL) 
+            ? ['email' => $loginField, 'password' => $password] 
+            : (is_numeric($loginField) ? ['celular' => $loginField, 'password' => $password] : ['username' => $loginField, 'password' => $password]);
+    
+        // Tentar autenticar o usuário
+        if (Auth::attempt($credentials)) {
             $req->session()->regenerate();
             return redirect()->route('index');
-        }else{
-            return redirect()->route('login')->with('error','Email ou senha incorretos');
+        } else {
+            return redirect()->route('login')->with('error', 'Email, celular ou username ou senha incorretos');
         }
     }
+    
+    
     
     public function logout(Request $req) {
         Auth::logout();
@@ -42,44 +54,36 @@ class UserController extends Controller
     }
     
     
-    public function create(Request $req)
+    public function create(UserRequest $req)
     {
-    //  $user = $req->all();
-      $req->validate([
-        'nome'=>'required|string',
-        'email'=> 'required|email',
-        'senha'=> 'required|string|min:6',
-        'senhaC'=>'required|string|min:6',
-        'username'=> 'required|unique:users,username',
-     ]);
-     $validet=$req;
-     $name = $validet["nome"];
-     $email = $validet["email"];
-    //  dd($name);
-     $senha = $validet["senha"];   
-     $senhac= $validet["senhaC"];
-     $cel= $validet["cel"];
-     $username= $validet["username"];
-
+        $username = $req->username;
+        $senha = $req->senha;
+        $senhac = $req->senhaC;
+        $cel = $req->cel;
+        $name = $req->nome;
+        $email = $req->email;  
+        
+        
     //  Erro de senhas diferentes
     if($senha !== $senhac){
-        return redirect()->back()->withErrors(['senhaC'=>'As senhas não coincidem']);
+        return redirect()->route('cadastrar')->with(['senhaC'=>'As senhas não coincidem']);
     }
     // Fim
-
-    if($cel==null){
-        $cel='00000000';
-    } 
-
-    if (strlen($cel) !== 8) {
-       
-        $cel = '00000000';
+    if (empty($cel)) {
+        $cel = null;
+    } else {
+        // Remover espaços em branco extras e verificar o comprimento
+        $cel = trim($cel); // Remove espaços em branco no início e no final
+    
+        if (strlen($cel) !== 8) {
+            return redirect()->route('cadastrar')->withErrors(['celerro'=>'Numero de celular não possui 8 digitos']); // Se não tiver 8 dígitos, retorne um erro
+        }
     }
-    // Erro de username ja existe
+    
+    // Erro de username ja existe, nao pega
     $existingUser = User::where('username', $username)->first();
-
-    if ($existingUser) {
-    return redirect()->back()->withErrors(['username' => 'Nome de usuário já registrado']);
+    if ($existingUser != null) {
+        return redirect()->route('cadastrar')->with(['username' => 'Nome de usuário já registrado']);
     }
     // Fim
 

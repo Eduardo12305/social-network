@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Adimin</title>
+    <title>Cadastrar Admin</title>
 </head>
 <body>
-    <from method="POST" action="{{ route('') }}">
-    @csrf
+    <form method="POST" action="{{ route('cre-admin') }}">
+        @csrf
         <div class="form-group">
-            <label for="nome">Nome</label>
-            <input name="nome" type="text" class="form-control" id="nome" required>
+            <label for="name">Nome</label>
+            <input name="name" type="text" class="form-control" id="name" required>
         </div>
         <div class="form-group">
-            <label for="email">E-mail</label>
-            <input name="email" type="email" class="form-control" id="email" required>
+            <label for="username">nome de usuario</label>
+            <input name="username" type="text" class="form-control" id="username" required>
         </div>
         <div class="form-group">
             <label for="senha">Senha</label>
@@ -25,10 +25,10 @@
             <input name="senhaC" type="password" class="form-control" id="senhaC" required>
         </div>
         <div>
-        <a href="{{route('login')}}">Login</a>
+        <a href="{{route('admin_login')}}">Login</a>
         </div>
 
         <button type="submit" class="btn btn-primary">Enviar</button>
-    </from>
+    </form>
 </body>
 </html>
