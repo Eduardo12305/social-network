@@ -86,17 +86,15 @@ class UserController extends Controller
         return redirect()->route('cadastrar')->with(['username' => 'Nome de usuário já registrado']);
     }
     // Fim
-
     
     
-     $res = User::create([
+    $res = User::create([
         'name'=> $name,
         'email' => $email,
         'password' => Hash::make($senha),
         'celular'=> $cel,
         'username' => $username,
     ]);
-    
     
     if ($res) {
         return redirect()->route('login');
