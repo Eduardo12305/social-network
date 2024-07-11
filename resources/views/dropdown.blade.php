@@ -16,10 +16,21 @@
        
 
 
-        <form method="POST" action="{{route('user.destroy', [auth()->user()->id])}}">
+        <form method="POST" action="{{route('user.destroy', [auth()->user()->id])}}" enctype="multipart/form-data">
         @method('DELETE')
         @csrf
         <button type="submit">deletar</button>
+        </form>
+
+        <form method="POST" action="{{route('profileUser',[auth()->user()->id])}}">
+            @csrf
+            <button type="submit">Perfil</button>
+        </form>
+
+        <form method="POST" action="{{route('envImVd',[auth()->user()->id])}}">
+            @crsf   
+            <input type="file" name="media" accept="image/*, video/*">
+            <button type="submit">Postar</button>
         </form>
     </div>
 </div>

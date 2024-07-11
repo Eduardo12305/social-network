@@ -75,6 +75,7 @@
 
 
         <button type="submit" class="btn btn-primary">Enviar</button>
+        <a href="login">login</a>
     </form>
 
     <!-- Bootstrap JS and dependencies -->

@@ -16,14 +16,16 @@ Route::get("/login",function(){
     return view("login");
 })->name('login');
 
+Route::view('perfil','profile')->name('profileUser');
 
 Route::controller(UserController::class)->group(function (){
 
-
+    Route::post('/perfil','envImVd')->name('envImVd');
     Route::post("/login","login")->name('processoLogin');
 
     Route::get('/logout', 'logout')->name('logout');
 
+    
    
     
 
