@@ -11,5 +11,5 @@ return view('welcome');
 
 Route::middleware(['auth'])->group(function () {
     Route::view('/index', 'index')->name('index');
-
+    Route::view('post','poster')->name('envArq');
 });

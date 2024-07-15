@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -163,8 +164,37 @@ class UserController extends Controller
     }
 
 
-public function envImVd(){
-    
+    public function envImVd(Request $request)
+{
+    // Validação do arquivo
+    $request->validate([
+        'arquivo' => 'required|file|mimes:jpeg,png,mp4,jfif|max:2048', // Exemplo de validação para imagens e vídeos até 2MB
+    ]);
+    dd('ok');
+
+    // Salvar arquivo no sistema de arquivos
+    if ($request->hasFile('arquivo')) {
+        $arquivo = $request->file('arquivo');
+
+        // Definir o diretório onde o arquivo será salvo (por exemplo, storage/app/public/uploads)
+        $diretorio = 'uploads';
+        $caminhoArquivo = $arquivo->store($diretorio);
+
+        // Salvar no banco de dados usando Eloquent ORM
+        $arquivoModel = new File();
+        $arquivoModel->name = $arquivo->getClientOriginalName();
+        $arquivoModel->type = $arquivo->getClientMimeType();
+        $arquivoModel->size = $arquivo->getSize();
+        $arquivoModel->path = $caminhoArquivo; // Salva o caminho do arquivo
+
+        if ($arquivoModel->save()) {
+            return "Arquivo enviado e informações salvas no banco de dados com sucesso.";
+        } else {
+            return "Erro ao salvar as informações do arquivo no banco de dados.";
+        }
+    }
+
+    return "Erro: nenhum arquivo enviado.";
 }
 
-}
+    }

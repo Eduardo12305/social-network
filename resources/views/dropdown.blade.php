@@ -27,11 +27,15 @@
             <button type="submit">Perfil</button>
         </form>
 
-        <form method="POST" action="{{route('envImVd',[auth()->user()->id])}}">
-            @crsf   
+        <form method="GET" action="{{route('envArq')}}">
+            @csrf   
+            <button type="submit">Postar foto</button>
+        </form>
+        <!-- <form method="POST" action="{{route('envImVd',[auth()->user()->id])}}">
+            @csrf   
             <input type="file" name="media" accept="image/*, video/*">
             <button type="submit">Postar</button>
-        </form>
+        </form> -->
     </div>
 </div>
 

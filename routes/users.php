@@ -18,6 +18,7 @@ Route::get("/login",function(){
 
 Route::view('perfil','profile')->name('profileUser');
 
+
 Route::controller(UserController::class)->group(function (){
 
     Route::post('/perfil','envImVd')->name('envImVd');
