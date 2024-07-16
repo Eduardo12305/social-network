@@ -164,13 +164,14 @@ class UserController extends Controller
     }
 
 
-    public function envImVd(Request $request)
+
+
+public function envImVd(Request $request)
 {
-    // Validação do arquivo
-    $request->validate([
-        'arquivo' => 'required|file|mimes:jpeg,png,mp4,jfif|max:2048', // Exemplo de validação para imagens e vídeos até 2MB
-    ]);
-    dd('ok');
+    // Validação do arquivo (se necessário)
+    // $request->validate([
+    //     'arquivo' => 'required|file|mimes:jpeg,png,mp4,jfif|max:2048',
+    // ]);
 
     // Salvar arquivo no sistema de arquivos
     if ($request->hasFile('arquivo')) {
@@ -178,6 +179,8 @@ class UserController extends Controller
 
         // Definir o diretório onde o arquivo será salvo (por exemplo, storage/app/public/uploads)
         $diretorio = 'uploads';
+
+        // Salvar o arquivo no diretório definido
         $caminhoArquivo = $arquivo->store($diretorio);
 
         // Salvar no banco de dados usando Eloquent ORM
@@ -196,5 +199,6 @@ class UserController extends Controller
 
     return "Erro: nenhum arquivo enviado.";
 }
+
 
     }

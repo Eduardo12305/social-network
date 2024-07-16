@@ -6,9 +6,9 @@
     <title>Esolha algum arquivo</title>
 </head>
 <body>
-        <form method="POST" action="{{route('envImVd')}}">
+        <form method="POST" action="{{route('envImVd')}}" enctype="multipart/form-data">
             @csrf   
-            <input type="file" name="arquivo" accept="image/*, video/*">
+            <input type="file" name="arquivo">
             <button type="submit">Postar</button>
         </form>
 </body>
